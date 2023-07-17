@@ -4,15 +4,15 @@ import Modal from './Modal/Modal';
 import Searchbar from './Searchbar/Searchbar';
 import Section from './Section/Section';
 import Loader from './Loader/Loader';
-import Notification from './Notification/Notification';
 import { requestImages } from 'services/api';
+import Notification from './Notification/Notification';
+import { toast } from 'react-toastify';
 
 import { useState, useEffect } from 'react';
 
 export function App() {
   const [modal, setModal] = useState({ open: false, modalData: null });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [value, setValue] = useState('');
@@ -23,13 +23,13 @@ export function App() {
       try {
         setLoading(true);
         const data = await requestImages(value, page);
-        setImages(prevState => {
-          return [...prevState, ...data.hits];
-        });
+        if (!data.hits.length) {
+          toast.error('No images found');
+        }
+        setImages(prevState => [...prevState, ...data.hits]);
         setTotalImages(data.totalHits);
-        setError(null);
       } catch (error) {
-        setError(error.message);
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }
@@ -61,7 +61,7 @@ export function App() {
   return (
     <Section>
       <Searchbar onSearchPictures={onSearchPictures} />
-      {error && <Notification message={error} />}
+      <Notification />
       {loading && <Loader />}
       <ImageGallery images={images} handlerClick={openModal} />
       {modal.open && <Modal onClose={closeModal} modalData={modal.modalData} />}

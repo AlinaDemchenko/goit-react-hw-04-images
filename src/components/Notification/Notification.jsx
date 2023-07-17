@@ -1,17 +1,22 @@
-import PropTypes from 'prop-types';
-import { StyledNotification } from './Notification.styled';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Notification =({message}) => {
-  return(
-  <StyledNotification>
-<span>✕</span>
-<p>{message}</p>
-</StyledNotification>
-)
-}
-
-Notification.propTypes = {
-  message: PropTypes.string
+function Notification() {
+  return (
+    <ToastContainer
+      position="top-right"
+      autoClose={2500}
+      hideProgressBar
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss={false}
+      draggable={false}
+      pauseOnHover={false}
+      theme="colored"
+      style={{ transform: 'translateY(60px)' }}
+    />
+  );
 }
 
 export default Notification;
