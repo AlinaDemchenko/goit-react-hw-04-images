@@ -7,6 +7,7 @@ const ImageGalleryItem = ({ url, alt, modalUrl, handlerClick }) => {
       <img
         src={url}
         alt={alt}
+        loading="lazy"
         onClick={() => {
           handlerClick({ modalUrl, alt });
         }}
